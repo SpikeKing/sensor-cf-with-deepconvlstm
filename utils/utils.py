@@ -88,3 +88,21 @@ def safe_div(x, y):
     else:
         return x / y
 
+
+def read_file(data_file, mode='more'):
+    """
+    读文件, 原文件和数据文件
+    :return: 单行或数组
+    """
+    try:
+        with open(data_file, 'r') as f:
+            if mode == 'one':
+                output = f.read()
+                return output
+            elif mode == 'more':
+                output = f.readlines()
+                return map(str.strip, output)
+            else:
+                return list()
+    except IOError:
+        return list()

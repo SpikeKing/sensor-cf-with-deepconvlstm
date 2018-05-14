@@ -9,7 +9,7 @@ NumPy FutureWarning
 https://stackoverflow.com/questions/48340392/futurewarning-conversion-of-the-second-argument-of-issubdtype-from-float-to
 """
 
-from data_loaders.simple_mnist_dl import SimpleMnistDL
+from data_loaders.dcl_loader import DclLoader
 from infers.simple_mnist_infer import SimpleMnistInfer
 from models.simple_mnist_model import SimpleMnistModel
 from trainers.simple_mnist_trainer import SimpleMnistTrainer
@@ -28,21 +28,21 @@ def main_train():
     parser = None
     config = None
 
-    try:
-        args, parser = get_train_args()
-        config = process_config(args.config)
-    except Exception as e:
-        print '[Exception] 配置无效, %s' % e
-        if parser:
-            parser.print_help()
-        print '[Exception] 参考: python main_train.py -c configs/simple_mnist_config.json'
-        exit(0)
-    # config = process_config('configs/simple_mnist_config.json')
+    # try:
+    #     args, parser = get_train_args()
+    #     config = process_config(args.config)
+    # except Exception as e:
+    #     print '[Exception] 配置无效, %s' % e
+    #     if parser:
+    #         parser.print_help()
+    #     print '[Exception] 参考: python main_train.py -c configs/simple_mnist_config.json'
+    #     exit(0)
+    config = process_config('configs/dcl_config.json')
 
     np.random.seed(47)  # 固定随机数
 
     print '[INFO] 加载数据...'
-    dl = SimpleMnistDL(config=config)
+    dl = DclLoader(config=config)
 
     print '[INFO] 构造网络...'
     model = SimpleMnistModel(config=config)
@@ -61,7 +61,7 @@ def test_main():
     config = process_config('configs/simple_mnist_config.json')
 
     print '[INFO] 加载数据...'
-    dl = SimpleMnistDL()
+    dl = DclLoader()
     test_data = np.expand_dims(dl.get_test_data()[0][0], axis=0)
     test_label = np.argmax(dl.get_test_data()[1][0])
 

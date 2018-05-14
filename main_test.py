@@ -6,7 +6,7 @@ Created by C. L. Wang on 2018/4/18
 """
 import numpy as np
 
-from data_loaders.simple_mnist_dl import SimpleMnistDL
+from data_loaders.simple_mnist_dl import DclLoader
 from infers.simple_mnist_infer import SimpleMnistInfer
 from utils.config_utils import process_config, get_test_args
 
@@ -33,7 +33,7 @@ def main_test():
     np.random.seed(47)  # 固定随机数
     
     print '[INFO] 加载数据...'
-    dl = SimpleMnistDL()
+    dl = DclLoader()
     test_data = np.expand_dims(dl.get_test_data()[0][0], axis=0)
     test_label = np.argmax(dl.get_test_data()[1][0])
 
