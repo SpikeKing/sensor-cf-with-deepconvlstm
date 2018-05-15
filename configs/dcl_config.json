@@ -1,5 +1,5 @@
 {
   "exp_name": "deepconvlstm",
   "num_epochs": 10,
-  "batch_size": 64
+  "batch_size": 256
 }

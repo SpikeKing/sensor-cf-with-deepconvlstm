@@ -10,9 +10,11 @@ https://stackoverflow.com/questions/48340392/futurewarning-conversion-of-the-sec
 """
 
 from data_loaders.dcl_loader import DclLoader
+from models.dcl_model import DclModel
+from trainers.dcl_trainer import DclTrainer
+
 from infers.simple_mnist_infer import SimpleMnistInfer
-from models.simple_mnist_model import SimpleMnistModel
-from trainers.simple_mnist_trainer import SimpleMnistTrainer
+
 from utils.config_utils import process_config, get_train_args
 import numpy as np
 
@@ -45,10 +47,10 @@ def main_train():
     dl = DclLoader(config=config)
 
     print '[INFO] 构造网络...'
-    model = SimpleMnistModel(config=config)
+    model = DclModel(config=config)
 
     print '[INFO] 训练网络...'
-    trainer = SimpleMnistTrainer(
+    trainer = DclTrainer(
         model=model.model,
         data=[dl.get_train_data(), dl.get_test_data()],
         config=config)

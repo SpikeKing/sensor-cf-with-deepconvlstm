@@ -16,9 +16,9 @@ import numpy as np
 from utils.np_utils import prp_2_oh_array
 
 
-class SimpleMnistTrainer(TrainerBase):
+class DclTrainer(TrainerBase):
     def __init__(self, model, data, config):
-        super(SimpleMnistTrainer, self).__init__(model, data, config)
+        super(DclTrainer, self).__init__(model, data, config)
         self.callbacks = []
         self.loss = []
         self.acc = []
@@ -50,15 +50,22 @@ class SimpleMnistTrainer(TrainerBase):
         self.callbacks.append(FPRMetricDetail())
 
     def train(self):
-        history = self.model.fit(
-            self.data[0][0], self.data[0][1],
-            epochs=self.config.num_epochs,
-            verbose=2,
-            batch_size=self.config.batch_size,
-            validation_data=(self.data[1][0], self.data[1][1]),
-            # validation_split=0.25,
-            callbacks=self.callbacks,
-        )
+        # history = self.model.fit(
+        #     self.data[0][0], self.data[0][1],
+        #     epochs=self.config.num_epochs,
+        #     verbose=2,
+        #     batch_size=self.config.batch_size,
+        #     validation_data=(self.data[1][0], self.data[1][1]),
+        #     # validation_split=0.25,
+        #     callbacks=self.callbacks,
+        # )
+
+        history = self.model.fit(self.data[0][0], self.data[0][1],
+                                 validation_data=(self.data[1][0], self.data[1][1]),
+                                 epochs=self.config.num_epochs,
+                                 batch_size=self.config.batch_size,
+                                 callbacks=self.callbacks)  # 增加FPR输出
+
         self.loss.extend(history.history['loss'])
         self.acc.extend(history.history['acc'])
         self.val_loss.extend(history.history['val_loss'])
@@ -88,8 +95,8 @@ class FPRMetricDetail(Callback):
     """
 
     def on_epoch_end(self, batch, logs=None):
-        val_x = self.validation_data[0]
-        val_y = self.validation_data[1]
+        val_x = [self.validation_data[0], self.validation_data[1], self.validation_data[2]]
+        val_y = self.validation_data[3]
 
         prd_y = prp_2_oh_array(np.asarray(self.model.predict(val_x)))
 
